@@ -11,12 +11,12 @@ B,Portugal,Marruecos,Europa,África,1,0
 B,Irán,España,Asia,Europa,0,1
 B,Irán,Portugal,Asia,Europa,1,1
 B,España,Marruecos,Europa,África,2,2
-C,Francia,Australia,Europa,Asia,2,1
+C,Francia,Australia,Europa,Oceanía,2,1
 C,Perú,Dinamarca,América del Sur,Europa,0,1
-C,Dinamarca,Australia,Europa,Asia,1,1
+C,Dinamarca,Australia,Europa,Oceanía,1,1
 C,Francia,Perú,Europa,América del Sur,1,0
 C,Dinamarca,Francia,Europa,Europa,0,0
-C,Australia,Perú,Asia,América del Sur,0,2
+C,Australia,Perú,Oceanía,América del Sur,0,2
 D,Argentina,Islandia,América del Sur,Europa,1,1
 D,Croacia,Nigeria,Europa,África,2,0
 D,Argentina,Croacia,América del Sur,Europa,0,3

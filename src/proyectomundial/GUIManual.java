@@ -150,7 +150,7 @@ public class GUIManual extends JFrame {
         // Pinta y ajuste diseño del contenedor del panel izquierdo
         pintarPanelIzquierdo();
         tabla_contadores();
-        
+
         menualeatorio();
 
         // Inicializa los componentes del panel derecho de los contenidos
@@ -564,7 +564,7 @@ public class GUIManual extends JFrame {
 
                 selecciones_clasificacion[i][2] = "CANTIDAD DT:";
                 selecciones_clasificacion[i][3] = Integer.toString(totaldt);
-                System.out.println(totaldt);
+
                 break;
 
             }
@@ -663,32 +663,37 @@ public class GUIManual extends JFrame {
 
             }
 
-            System.out.println(aux);
             //se guaradan PARTIDOS CON MENOS GOLES
+            for (int k = 0; k < resultados_clasificacion.length; k++) {
 
-            resultados_clasificacion[aux][0] = "Patidos con MENOS goles";
-            resultados_clasificacion[aux][1] = "Goles";
-            for (int j = 0; j < resultados.length; j++) {
+                if (resultados_clasificacion[k][0] == null) {
 
-                int restatep = (Integer.parseInt(resultados[j][5]) + Integer.parseInt(resultados[j][6]));
-                if (restatep <= contador2) {
-                    contador2 = restatep;
-                    restatep = 0;
+                    resultados_clasificacion[aux + 1][0] = "Patidos con MENOS goles";
+                    resultados_clasificacion[aux + 1][1] = "Goles";
+                    for (int j = 0; j < resultados.length; j++) {
 
+                        int restatep = (Integer.parseInt(resultados[j][5]) + Integer.parseInt(resultados[j][6]));
+                        if (restatep <= contador2) {
+                            contador2 = restatep;
+                            restatep = 0;
+
+                        }
+                    }
+
+                    int restatep = (Integer.parseInt(resultados[i][5]) + Integer.parseInt(resultados[i][6]));
+
+                    if (restatep == contador2) {
+
+                        resultados_clasificacion[aux2 + 2][1] = resultados[i][5];
+                        resultados_clasificacion[aux2 + 3][1] = resultados[i][6];
+                        resultados_clasificacion[aux2 + 2][0] = resultados[i][1];
+                        resultados_clasificacion[aux2 + 3][0] = resultados[i][2];
+                        aux2 += 2;
+                        break;
+                    }
                 }
             }
 
-            int restatep = (Integer.parseInt(resultados[i][5]) + Integer.parseInt(resultados[i][6]));
-
-            if (restatep == contador2) {
-                System.out.println(resultados[i][1] + "aux2");
-                resultados_clasificacion[aux2 + 1][1] = resultados[i][5];
-                resultados_clasificacion[aux2 + 2][1] = resultados[i][6];
-                resultados_clasificacion[aux2 + 1][0] = resultados[i][1];
-                resultados_clasificacion[aux2 + 2][0] = resultados[i][2];
-                aux2 += 2;
-
-            }
             //se guaradan el numero de partidos con un ganador y empate
             if (Integer.parseInt(resultados[i][5]) != Integer.parseInt(resultados[i][6])) {
                 gandores++;
@@ -702,14 +707,327 @@ public class GUIManual extends JFrame {
 
         }
 
-        executaccionDashboard2();
+        executselecionesxgoles();
+        executgrupos();
+        executpuntosdeseleciones();
 
     }
 
-    private void executaccionDashboard2() {
+    private void executgrupos() {
+        clasificacion_grupos = new String[resultados.length][8];
 
-        //seleciones con mas y menos goles 
-        //crear una matrix de dos colmunas 
+        int cont = 0;
+        for (int i = 0; i < resultados.length; i++) {
+            switch (resultados[i][0]) {
+
+                case "A":
+                    cont = 0;
+                    break;
+                case "B":
+                    cont = 1;
+                    break;
+                case "C":
+                    cont = 2;
+                    break;
+                case "D":
+                    cont = 3;
+                    break;
+                case "E":
+                    cont = 4;
+                    break;
+                case "F":
+                    cont = 5;
+                    break;
+                case "G":
+                    cont = 6;
+                    break;
+                case "H":
+                    cont = 7;
+                    break;
+            }
+
+            //BUSCADOR
+            if (true) {
+
+                String seleccion = resultados[i][1];
+                boolean existe = false;
+                int pos = -1;
+                // Buscamos si la selección exite
+                for (int j = 0; j < clasificacion_grupos.length; j++) {
+                    if (seleccion.equals(clasificacion_grupos[j][cont])) { // la columna
+                        // Si ya existe, incrementamos su contador
+                        existe = true;
+                        break;
+                    } else if (clasificacion_grupos[j][cont] == null && pos == -1) { // la columna
+                        // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                        pos = j;
+                    }
+
+                    // Si no existe, la agregamos al vector de clasificación
+                    if (!existe) {
+                        if (pos != -1) {
+                            clasificacion_grupos[pos][cont] = seleccion;    // la columna
+                        } else {
+                            clasificacion_grupos[clasificacion_grupos.length - 1][cont] = seleccion;// la columna
+                        }
+                    }
+                }
+            }
+
+            String seleccion = resultados[i][2];
+            boolean existe = false;
+            int pos = -1;
+            // Buscamos si la selección exite
+            for (int j = 0; j < clasificacion_grupos.length; j++) {
+                if (seleccion.equals(clasificacion_grupos[j][cont])) { // la columna
+                    // Si ya existe, incrementamos su contador
+                    existe = true;
+                    break;
+                } else if (clasificacion_grupos[j][cont] == null && pos == -1) { // la columna
+                    // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                    pos = j;
+                }
+            }
+            // Si no existe, la agregamos al vector de clasificación
+            if (!existe) {
+                if (pos != -1) {
+                    clasificacion_grupos[pos][cont] = seleccion;    // la columna
+                } else {
+                    clasificacion_grupos[clasificacion_grupos.length - 1][cont] = seleccion;// la columna
+
+                }
+
+            }
+        }
+    }
+
+    private void executpuntosdeseleciones() {
+        //Busca en cada partido el ganador y leda 3 puntos cada vez que gana
+
+        for (int i = 0; i < resultados.length; i++) {
+            int equipo1 = Integer.parseInt(resultados[i][5]);
+            int equipo2 = Integer.parseInt(resultados[i][6]);
+
+            if (equipo1 > equipo2) {
+
+                String seleccion = resultados[i][1];
+                boolean existe = false;
+                int pos = -1;
+
+                // Buscamos si la selección existe
+                for (int j = 0; j < selecionesxgoles.length; j++) {
+                    if (seleccion.equals(selecionesxgoles[j][2])) {
+                        // Si ya existe, incrementamos su contador
+                        int contador = Integer.parseInt(selecionesxgoles[j][3]) + 3;
+                        selecionesxgoles[j][3] = String.valueOf(contador);
+                        existe = true;
+                        break;
+                    } else if (selecionesxgoles[j][2] == null && pos == -1) {
+                        // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                        pos = j;
+                    }
+                }
+
+                // Si no existe, la agregamos al vector de clasificación
+                if (!existe) {
+                    if (pos != -1) {
+                        selecionesxgoles[pos][2] = seleccion;
+                        selecionesxgoles[pos][3] = "3";  // Asignamos 3 puntos al equipo1 que ganó
+                    } else {
+                        selecionesxgoles[selecionesxgoles.length - 1][0] = seleccion;
+                        selecionesxgoles[selecionesxgoles.length - 1][1] = "0";
+                    }
+                }
+            }
+
+            if (equipo1 < equipo2) {
+                String seleccion = resultados[i][2];
+                boolean existe = false;
+                int pos = -1;
+
+                // Buscamos si la selección existe
+                for (int j = 0; j < selecionesxgoles.length; j++) {
+                    if (seleccion.equals(selecionesxgoles[j][2])) {
+                        // Si ya existe, incrementamos su contador
+                        int contador = Integer.parseInt(selecionesxgoles[j][3]) + 3;
+                        selecionesxgoles[j][3] = String.valueOf(contador);
+                        existe = true;
+                        break;
+                    } else if (selecionesxgoles[j][2] == null && pos == -1) {
+                        // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                        pos = j;
+                    }
+                }
+
+                // Si no existe, la agregamos al vector de clasificación
+                if (!existe) {
+                    if (pos != -1) {
+                        selecionesxgoles[pos][2] = seleccion;
+                        selecionesxgoles[pos][3] = "3";  // Asignamos 3 puntos al equipo1 que ganó
+                    } else {
+                        selecionesxgoles[selecionesxgoles.length - 1][0] = seleccion;
+                        selecionesxgoles[selecionesxgoles.length - 1][1] = "0";
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void executselecionesxgoles() {
+
+        selecionesxgoles = new String[resultados.length][6];
+
+        for (int i = 0; i < selecionesxgoles.length; i++) {
+            selecionesxgoles[i][1] = "0";
+
+        }
+
+        for (int i = 0; i < resultados.length; i++) {
+            String seleccion = resultados[i][1];
+            boolean existe = false;
+            int pos = -1;
+
+            // Buscamos si la selección exite
+            for (int j = 0; j < selecionesxgoles.length; j++) {
+                if (seleccion.equals(selecionesxgoles[j][0])) {
+                    // Si ya existe, incrementamos su contador
+                    int contador = Integer.parseInt(selecionesxgoles[j][1]) + Integer.parseInt(resultados[i][5]);
+                    selecionesxgoles[j][1] = String.valueOf(contador);
+                    existe = true;
+                    break;
+                } else if (selecionesxgoles[j][0] == null && pos == -1) {
+                    // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                    pos = j;
+                }
+            }
+
+            // Si no existe, la agregamos al vector de clasificación
+            if (!existe) {
+                if (pos != -1) {
+                    selecionesxgoles[pos][0] = seleccion;
+                    selecionesxgoles[pos][1] = resultados[i][5];
+                } else {
+                    selecionesxgoles[selecionesxgoles.length - 1][0] = seleccion;
+                    selecionesxgoles[selecionesxgoles.length - 1][1] = "1";
+                }
+            }
+        }
+        for (int i = 0; i < resultados.length; i++) {
+            String seleccion = resultados[i][2];
+            boolean existe = false;
+            int pos = -1;
+
+            // Buscamos si la selección exite
+            for (int j = 0; j < selecionesxgoles.length; j++) {
+                if (seleccion.equals(selecionesxgoles[j][0])) {
+                    // Si ya existe, incrementamos su contador
+                    int contador = Integer.parseInt(selecionesxgoles[j][1]) + Integer.parseInt(resultados[i][6]);
+                    selecionesxgoles[j][1] = String.valueOf(contador);
+                    existe = true;
+                    break;
+                } else if (selecionesxgoles[j][0] == null && pos == -1) {
+                    // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                    pos = j;
+                }
+            }
+            // Si no existe, la agregamos al vector de clasificación
+            if (!existe) {
+                if (pos != -1) {
+                    selecionesxgoles[pos][0] = seleccion;
+                    selecionesxgoles[pos][1] = resultados[i][6];
+                } else {
+                    selecionesxgoles[selecionesxgoles.length - 1][0] = seleccion;
+                    selecionesxgoles[selecionesxgoles.length - 1][1] = "1";
+                }
+            }
+        }
+
+        int filas = selecionesxgoles.length;
+// Ordenar el vector de mayor a menor utilizando el algoritmo de burbuja
+        for (int i = 0; i < filas - 1; i++) {
+            for (int j = 0; j < filas - i - 1; j++) {
+                int valorActual = Integer.parseInt(selecionesxgoles[j][1]);
+                int valorSiguiente = Integer.parseInt(selecionesxgoles[j + 1][1]);
+
+                if (valorActual < valorSiguiente) {
+                    // Intercambiar las filas en el vector
+                    String[] temp = selecionesxgoles[j];
+                    selecionesxgoles[j] = selecionesxgoles[j + 1];
+                    selecionesxgoles[j + 1] = temp;
+                }
+            }
+        }
+
+        //Filtro por continetes
+        for (int i = 0; i < resultados.length; i++) {
+            String Continete = resultados[i][3];
+            boolean existe = false;
+            int pos = -1;
+
+            // Buscamos si la selección exite
+            for (int j = 0; j < selecionesxgoles.length; j++) {
+                if (Continete.equals(selecionesxgoles[j][4])) {
+                    // Si ya existe, incrementamos su contador
+                    int contador = Integer.parseInt(selecionesxgoles[j][5]) + Integer.parseInt(resultados[i][5]);
+                    selecionesxgoles[j][5] = String.valueOf(contador);
+                    existe = true;
+                    break;
+                } else if (selecionesxgoles[j][4] == null && pos == -1) {
+                    // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                    pos = j;
+                }
+            }
+
+            // Si no existe, la agregamos al vector de clasificación
+            if (!existe) {
+                if (pos != -1) {
+                    selecionesxgoles[pos][4] = Continete;
+                    selecionesxgoles[pos][5] = resultados[i][5];
+                } else {
+                    selecionesxgoles[selecionesxgoles.length - 1][4] = Continete;
+                    selecionesxgoles[selecionesxgoles.length - 1][5] = "1";
+                }
+            }
+        }
+        for (int i = 0; i < resultados.length; i++) {
+            String seleccion = resultados[i][4];
+            boolean existe = false;
+            int pos = -1;
+
+            // Buscamos si la selección exite
+            for (int j = 0; j < selecionesxgoles.length; j++) {
+                if (seleccion.equals(selecionesxgoles[j][4])) {
+                    // Si ya existe, incrementamos su contador
+                    int contador = Integer.parseInt(selecionesxgoles[j][5]) + Integer.parseInt(resultados[i][6]);
+                    selecionesxgoles[j][5] = String.valueOf(contador);
+                    existe = true;
+                    break;
+                } else if (selecionesxgoles[j][4] == null && pos == -1) {
+                    // Si encontramos un espacio vacío, lo marcamos como posición disponible
+                    pos = j;
+                }
+            }
+            // Si no existe, la agregamos al vector de clasificación
+            if (!existe) {
+                if (pos != -1) {
+                    selecionesxgoles[pos][4] = seleccion;
+                    selecionesxgoles[pos][5] = resultados[i][6];
+                } else {
+                    selecionesxgoles[selecionesxgoles.length - 1][4] = seleccion;
+                    selecionesxgoles[selecionesxgoles.length - 1][5] = "1";
+                }
+            }
+        }
+
+        for (int i = 0; i < selecionesxgoles.length; i++) {
+
+            if (selecionesxgoles[i][0] == null) {
+                selecionesxgoles[i][1] = null;
+            }
+
+        }
+
     }
 
     private void pintarPanelIzquierdo() {
@@ -750,7 +1068,7 @@ public class GUIManual extends JFrame {
 
             // Se obtiene la ruta del archivo seleccionado
             //String ruta = cargarFile.getSelectedFile().getAbsolutePath();
-            String ruta = "C:\\Users\\eddym\\OneDrive\\Escritorio\\ProyectoMundial\\src\\proyectomundial\\files\\selecciones.csv";
+            String ruta = "C:\\Users\\eddym\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoMundial\\src\\proyectomundial\\files\\selecciones.csv";
 
             // Se obtiene el archivo y se almancena en la variable f
             File f = new File(ruta);
@@ -878,7 +1196,7 @@ public class GUIManual extends JFrame {
         try {
             // Se obtiene la ruta del archivo seleccionado
             //String ruta = cargarFile.getSelectedFile().getAbsolutePath();
-            String ruta = "C:\\Users\\eddym\\OneDrive\\Escritorio\\ProyectoMundial\\src\\proyectomundial\\files\\partidos2018.csv";
+            String ruta = "C:\\Users\\eddym\\OneDrive\\Documentos\\NetBeansProjects\\ProyectoMundial\\src\\proyectomundial\\files\\partidos2018.csv";
             // Se obtiene el archivo y se almancena en la variable f
             File f = new File(ruta);
             entrada = new Scanner(f);
